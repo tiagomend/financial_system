@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PersonType;
+use App\Models\Document;
 use App\Models\Supplier;
+use App\Models\SupplierDocument;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -29,7 +32,46 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $supplier = Supplier::create($request->all());
-        return $supplier;
+
+        if ($supplier->person_type === PersonType::NATURAL) {
+            if ($request->input('cpf')) {
+                $cpf = Document::create([
+                    'type' => 'cpf',
+                    'value' => $request->input('cpf'),
+                ]);
+
+                SupplierDocument::create([
+                    'supplier_id' => $supplier->id,
+                    'document_id' => $cpf->id,
+                ]);
+
+                return $supplier;
+            } else {
+                $supplier->delete();
+                return 'Sem documento!';
+            }
+        }
+        if ($supplier->person_type === PersonType::LEGAL) {
+            if ($request->input('cnpj')) {
+                $cnpj = Document::create([
+                    'type' => 'cnpj',
+                    'value' => $request->input('cnpj'),
+                ]);
+
+                SupplierDocument::create([
+                    'supplier_id' => $supplier->id,
+                    'document_id' => $cnpj->id,
+                ]);
+
+                return $supplier;
+            } else {
+                $supplier->delete();
+                return 'Sem documento!';
+            }
+        } else {
+            $supplier->delete();
+            return 'Sem documento!';
+        }
     }
 
     /**
