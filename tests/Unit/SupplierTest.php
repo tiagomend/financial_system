@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Supplier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Enums\PersonType;
+use App\Models\Address;
 use App\Models\Document;
 use App\Models\SupplierDocument;
 use Tests\TestCase as TestCase;
@@ -13,28 +14,51 @@ class SupplierTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_create_supplier_legal(): void
+    private array $data;
+    private Supplier $supplier;
+    private Address $address;
+
+    protected function setUp(): void
     {
-        $data = [
+        parent::setUp();
+
+        $this->address = Address::create([
+            'street_type' => 'road',
+            'street' => 'Antonio Boscaglia',
+            'number' => '96',
+            'complement' => 'Adm',
+            'neighborhood' => 'Nova Igarapava',
+            'city' => 'Igarapava',
+            'state' => 'SP',
+            'postal_code' => '14540-000',
+            'country' => 'Brasil'
+        ]);
+
+        $this->data = [
             'name' => 'Company SA',
             'trade_name' => 'Company',
-            'person_type' => PersonType::LEGAL
+            'person_type' => PersonType::LEGAL,
+            'address_id' => $this->address->id,
         ];
 
-        $supplier = Supplier::create($data);
+        $this->supplier = Supplier::create($this->data);
+    }
 
-        $this->assertDatabaseHas('suppliers', $data);
-        $this->assertInstanceOf(Supplier::class, $supplier);
-        $this->assertEquals('Company SA', $supplier->name);
-        $this->assertEquals('Company', $supplier->trade_name);
-        $this->assertEquals(PersonType::LEGAL, $supplier->person_type);
+    public function test_create_supplier_legal(): void
+    {
+        $this->assertDatabaseHas('suppliers', $this->data);
+        $this->assertInstanceOf(Supplier::class, $this->supplier);
+        $this->assertEquals('Company SA', $this->supplier->name);
+        $this->assertEquals('Company', $this->supplier->trade_name);
+        $this->assertEquals(PersonType::LEGAL, $this->supplier->person_type);
     }
 
     public function test_create_supplier_natural(): void
     {
         $data = [
             'name' => 'Company SA',
-            'person_type' => PersonType::NATURAL
+            'person_type' => PersonType::NATURAL,
+            'address_id' => $this->address->id,
         ];
 
         $supplier = Supplier::create($data);
@@ -46,25 +70,18 @@ class SupplierTest extends TestCase
         $this->assertEquals(PersonType::NATURAL, $supplier->person_type);
     }
 
-    public function test_create_supplier_with_document(): void
+    public function test_relationship_with_document(): void
     {
-        $data = [
-            'name' => 'Company SA',
-            'trade_name' => 'Company',
-            'person_type' => PersonType::LEGAL
-        ];
-
-        $supplier = Supplier::create($data);
         $document = Document::create([
             'type' => 'cnpj',
             'value' => '88823401000192'
         ]);
         SupplierDocument::create([
-            'supplier_id' => $supplier->id,
+            'supplier_id' => $this->supplier->id,
             'document_id' => $document->id,
         ]);
 
-        $this->assertCount(1, $supplier->documents);
-        $this->assertTrue($supplier->documents->contains($document));
+        $this->assertCount(1, $this->supplier->documents);
+        $this->assertTrue($this->supplier->documents->contains($document));
     }
 }

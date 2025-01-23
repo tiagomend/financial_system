@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PersonType;
+use App\Models\Address;
 use App\Models\Document;
 use App\Models\Supplier;
 use App\Models\SupplierDocument;
@@ -31,7 +32,8 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        $supplier = Supplier::create($request->all());
+        $address = Address::create($request->all());
+        $supplier = Supplier::create([...$request->all(), 'address_id' => $address->id]);
 
         if ($supplier->person_type === PersonType::NATURAL) {
             if ($request->input('cpf')) {

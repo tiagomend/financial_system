@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="card">
-    <form id="main-form" action="{{ route('suppliers.store') }}" method="post" class="form-control" autocomplete="off"
+    <form id="main-form" action="{{ route('suppliers.store') }}" method="post" class="form-control" autocomplete="false"
         @if(isset($enctype)) enctype="multipart/form-data" @endif>
         <div class="card-header flex space-between">
             <div class="page-header">
@@ -47,15 +47,15 @@
                 <div class="col-4">
                     <label for="street_type_id">Tipo de Logradouro:</label>
                     <select name="street_type" id="street_type_id">
-                        <option value="legal">Rua</option>
-                        <option value="natural">Avenida</option>
+                        <option value="road">Rua</option>
+                        <option value="avenue">Avenida</option>
                     </select>
                     <label for="street_id">Nome da rua:</label>
                     <input name="street" type="text" id="street_id">
                     <label for="number_id">Número:</label>
                     <input name="number" type="text" id="number_id">
-                    <label for="neighboord_id">Bairro:</label>
-                    <input name="neighboord" type="text" id="neighboord_id">
+                    <label for="neighborhood_id">Bairro:</label>
+                    <input name="neighborhood" type="text" id="neighborhood_id">
                 </div>
                 <div class="col-4">
                     <label for="postal_code_id">CEP:</label>

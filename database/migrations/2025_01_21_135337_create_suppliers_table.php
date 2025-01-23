@@ -16,7 +16,13 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('trade_name', 50)->nullable();
             $table->enum('person_type', ['legal', 'natural']);
+            $table->uuid('address_id');
             $table->timestamps();
+
+            $table->foreign('address_id')
+                ->references('id')
+                ->on('addresses')
+                ->onDelete('cascade');
         });
     }
 

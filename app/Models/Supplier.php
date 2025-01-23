@@ -18,7 +18,8 @@ class Supplier extends Model
         'name',
         'trade_name',
         'person_type',
-        'document'
+        'document',
+        'address_id'
     ];
 
     protected function personType(): Attribute
@@ -38,5 +39,10 @@ class Supplier extends Model
             'id',
             'document_id'
         );
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 }
