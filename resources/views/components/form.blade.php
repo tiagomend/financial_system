@@ -1,5 +1,5 @@
 <x-card>
-    <form id="main-form" action="{{ $action }}" method="{{ $method }}" class="form-control" autocomplete="false"
+    <form id="main-form" action="{{ $action }}" method="{{ $method }}" class="form-control" autocomplete="off"
         @if(isset($enctype)) enctype="multipart/form-data" @endif>
         <x-card-header>
             <div class="flex space-between">

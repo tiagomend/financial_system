@@ -6,7 +6,7 @@
         @csrf
         <div class="row">
             <div class="col-4">
-                <x-input-field name="name" label="Nome do Centro de Custo:" />
+                <x-input-field name="name" label="Nome do Centro de Custo:" mask="upper" />
                 <x-input-field name="budget" label="Orçamento:" mask="money" />
                 <x-select-field name="cost_center_type" label="Tipo:">
                     <option value="project">Projeto</option>

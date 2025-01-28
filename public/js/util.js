@@ -57,7 +57,7 @@ export const cnpjMask = () => {
 }
 
 export const moneyMask = () => {
-	const elements = [...document.querySelectorAll('[data-mask="money"')];
+	const elements = [...document.querySelectorAll('[data-mask="money"]')];
 	elements.forEach(element => {
 		element.addEventListener('input', () => {
 			let value = element.value.replace(/\D/g, "");
@@ -70,4 +70,14 @@ export const moneyMask = () => {
             element.value = value;
 		})
 	})
+}
+
+export const upperMask = () => {
+    const elements = [...document.querySelectorAll('[data-mask="upper"]')];
+    elements.forEach(element => {
+        element.addEventListener('input', () => {
+            let value = element.value.toUpperCase();
+            element.value = value;
+        })
+    })
 }

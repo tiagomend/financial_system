@@ -1,3 +1,4 @@
-import { moneyMask } from "./util.js";
+import { moneyMask, upperMask } from "./util.js";
 
 moneyMask();
+upperMask();
