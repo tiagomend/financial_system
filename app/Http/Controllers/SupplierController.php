@@ -16,7 +16,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $suppliers = Supplier::with('documents')->get();
+        return view('suppliers.index', compact('suppliers'));
     }
 
     /**
@@ -47,10 +48,10 @@ class SupplierController extends Controller
                     'document_id' => $cpf->id,
                 ]);
 
-                return $supplier;
+                return redirect()->route('suppliers.index')->with('success', 'Fornecedor criado com sucesso!');
             } else {
                 $supplier->delete();
-                return 'Sem documento!';
+                return redirect()->back()->with('error', 'Sem documento!');
             }
         }
         if ($supplier->person_type === PersonType::LEGAL) {
@@ -65,14 +66,14 @@ class SupplierController extends Controller
                     'document_id' => $cnpj->id,
                 ]);
 
-                return $supplier;
+                return redirect()->route('suppliers.index')->with('success', 'Fornecedor criado com sucesso!');
             } else {
                 $supplier->delete();
-                return 'Sem documento!';
+                return redirect()->back()->with('error', 'Sem documento!');
             }
         } else {
             $supplier->delete();
-            return 'Sem documento!';
+            return redirect()->back()->with('error', 'Sem documento!');
         }
     }
 
@@ -81,7 +82,8 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
+        $supplier->load('documents', 'address');
+        return view('suppliers.show', compact('supplier'));
     }
 
     /**
@@ -89,7 +91,8 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //
+        $supplier->load('documents', 'address');
+        return view('suppliers.edit', compact('supplier'));
     }
 
     /**
@@ -97,7 +100,65 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        // Update supplier basic info
+        $supplier->update($request->only(['name', 'trade_name', 'person_type']));
+
+        // Update address if exists, create if not
+        if ($supplier->address) {
+            $supplier->address->update($request->only([
+                'street_type', 'street', 'number', 'neighborhood', 
+                'postal_code', 'city', 'state', 'country'
+            ]));
+        } else {
+            $address = Address::create($request->only([
+                'street_type', 'street', 'number', 'neighborhood', 
+                'postal_code', 'city', 'state', 'country'
+            ]));
+            $supplier->update(['address_id' => $address->id]);
+        }
+
+        // Update document
+        $existingDocument = $supplier->documents->first();
+        
+        if ($supplier->person_type === PersonType::NATURAL) {
+            if ($request->input('cpf')) {
+                if ($existingDocument) {
+                    $existingDocument->update([
+                        'type' => 'cpf',
+                        'value' => $request->input('cpf'),
+                    ]);
+                } else {
+                    $cpf = Document::create([
+                        'type' => 'cpf',
+                        'value' => $request->input('cpf'),
+                    ]);
+                    SupplierDocument::create([
+                        'supplier_id' => $supplier->id,
+                        'document_id' => $cpf->id,
+                    ]);
+                }
+            }
+        } elseif ($supplier->person_type === PersonType::LEGAL) {
+            if ($request->input('cnpj')) {
+                if ($existingDocument) {
+                    $existingDocument->update([
+                        'type' => 'cnpj',
+                        'value' => $request->input('cnpj'),
+                    ]);
+                } else {
+                    $cnpj = Document::create([
+                        'type' => 'cnpj',
+                        'value' => $request->input('cnpj'),
+                    ]);
+                    SupplierDocument::create([
+                        'supplier_id' => $supplier->id,
+                        'document_id' => $cnpj->id,
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('suppliers.index')->with('success', 'Fornecedor atualizado com sucesso!');
     }
 
     /**
@@ -105,6 +166,22 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        // Delete associated documents
+        foreach ($supplier->documents as $document) {
+            SupplierDocument::where('supplier_id', $supplier->id)
+                ->where('document_id', $document->id)
+                ->delete();
+            $document->delete();
+        }
+
+        // Delete address if exists
+        if ($supplier->address) {
+            $supplier->address->delete();
+        }
+
+        // Delete supplier
+        $supplier->delete();
+
+        return redirect()->route('suppliers.index')->with('success', 'Fornecedor excluído com sucesso!');
     }
 }

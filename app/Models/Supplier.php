@@ -43,6 +43,6 @@ class Supplier extends Model
 
     public function address()
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo(Address::class);
     }
 }
