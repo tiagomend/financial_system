@@ -29,6 +29,7 @@ class ExpenseCategoryController extends Controller
     public function store(Request $request)
     {
         $expenseCategory = ExpenseCategory::create($request->all());
+
         return $expenseCategory;
     }
 

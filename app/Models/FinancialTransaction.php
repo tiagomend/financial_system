@@ -10,6 +10,7 @@ class FinancialTransaction extends Model
     use HasUuids;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -19,6 +20,6 @@ class FinancialTransaction extends Model
         'amount',
         'recipient_id',
         'expense_category_id',
-        'recipient_type'
+        'recipient_type',
     ];
 }

@@ -17,6 +17,7 @@ class SupplierController extends Controller
     public function index()
     {
         $suppliers = Supplier::with('documents')->get();
+
         return view('suppliers.index', compact('suppliers'));
     }
 
@@ -51,6 +52,7 @@ class SupplierController extends Controller
                 return redirect()->route('suppliers.index')->with('success', 'Fornecedor criado com sucesso!');
             } else {
                 $supplier->delete();
+
                 return redirect()->back()->with('error', 'Sem documento!');
             }
         }
@@ -69,10 +71,12 @@ class SupplierController extends Controller
                 return redirect()->route('suppliers.index')->with('success', 'Fornecedor criado com sucesso!');
             } else {
                 $supplier->delete();
+
                 return redirect()->back()->with('error', 'Sem documento!');
             }
         } else {
             $supplier->delete();
+
             return redirect()->back()->with('error', 'Sem documento!');
         }
     }
@@ -83,6 +87,7 @@ class SupplierController extends Controller
     public function show(Supplier $supplier)
     {
         $supplier->load('documents', 'address');
+
         return view('suppliers.show', compact('supplier'));
     }
 
@@ -92,6 +97,7 @@ class SupplierController extends Controller
     public function edit(Supplier $supplier)
     {
         $supplier->load('documents', 'address');
+
         return view('suppliers.edit', compact('supplier'));
     }
 
@@ -106,20 +112,20 @@ class SupplierController extends Controller
         // Update address if exists, create if not
         if ($supplier->address) {
             $supplier->address->update($request->only([
-                'street_type', 'street', 'number', 'neighborhood', 
-                'postal_code', 'city', 'state', 'country'
+                'street_type', 'street', 'number', 'neighborhood',
+                'postal_code', 'city', 'state', 'country',
             ]));
         } else {
             $address = Address::create($request->only([
-                'street_type', 'street', 'number', 'neighborhood', 
-                'postal_code', 'city', 'state', 'country'
+                'street_type', 'street', 'number', 'neighborhood',
+                'postal_code', 'city', 'state', 'country',
             ]));
             $supplier->update(['address_id' => $address->id]);
         }
 
         // Update document
         $existingDocument = $supplier->documents->first();
-        
+
         if ($supplier->person_type === PersonType::NATURAL) {
             if ($request->input('cpf')) {
                 if ($existingDocument) {

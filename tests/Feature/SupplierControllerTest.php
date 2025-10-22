@@ -30,7 +30,7 @@ class SupplierControllerTest extends TestCase
             'city' => 'Igarapava',
             'state' => 'SP',
             'postal_code' => '14540-000',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ];
 
         // Faz a requisição POST para o método store
@@ -70,14 +70,14 @@ class SupplierControllerTest extends TestCase
             'city' => 'Test City',
             'state' => 'TS',
             'postal_code' => '12345-678',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ]);
 
         $supplier1 = Supplier::create([
             'name' => 'Supplier One',
             'trade_name' => 'S1',
             'person_type' => 'legal',
-            'address_id' => $address1->id
+            'address_id' => $address1->id,
         ]);
 
         $address2 = Address::create([
@@ -88,14 +88,14 @@ class SupplierControllerTest extends TestCase
             'city' => 'Another City',
             'state' => 'AS',
             'postal_code' => '98765-432',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ]);
 
         $supplier2 = Supplier::create([
             'name' => 'Supplier Two',
             'trade_name' => 'S2',
             'person_type' => 'natural',
-            'address_id' => $address2->id
+            'address_id' => $address2->id,
         ]);
 
         // Faz a requisição GET para o método index
@@ -122,14 +122,14 @@ class SupplierControllerTest extends TestCase
             'city' => 'Test City',
             'state' => 'TS',
             'postal_code' => '12345-678',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ]);
 
         $supplier = Supplier::create([
             'name' => 'Test Supplier',
             'trade_name' => 'TS',
             'person_type' => 'legal',
-            'address_id' => $address->id
+            'address_id' => $address->id,
         ]);
 
         // Faz a requisição GET para o método show
@@ -156,14 +156,14 @@ class SupplierControllerTest extends TestCase
             'city' => 'Old City',
             'state' => 'OS',
             'postal_code' => '12345-678',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ]);
 
         $supplier = Supplier::create([
             'name' => 'Old Name',
             'trade_name' => 'Old Trade Name',
             'person_type' => 'legal',
-            'address_id' => $address->id
+            'address_id' => $address->id,
         ]);
 
         $updateData = [
@@ -178,7 +178,7 @@ class SupplierControllerTest extends TestCase
             'city' => 'New City',
             'state' => 'NS',
             'postal_code' => '98765-432',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ];
 
         // Faz a requisição PUT para o método update
@@ -215,14 +215,14 @@ class SupplierControllerTest extends TestCase
             'city' => 'Test City',
             'state' => 'TS',
             'postal_code' => '12345-678',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ]);
 
         $supplier = Supplier::create([
             'name' => 'Supplier to Delete',
             'trade_name' => 'STD',
             'person_type' => 'legal',
-            'address_id' => $address->id
+            'address_id' => $address->id,
         ]);
 
         // Faz a requisição DELETE para o método destroy
