@@ -1,16 +1,18 @@
 @extends('layouts.base')
 
 @section('content')
-<x-card title="Detalhes do Fornecedor">
+<x-card>
     <x-card-header>
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>{{ $supplier->name }}</h2>
-            <div>
-                <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-warning">
-                    <i class="icon_edit"></i> Editar
+        <div class="flex space-between">
+            <div class="page-header">
+                <h3>{{ $supplier->name }}</h3>
+            </div>
+            <div class="section-action">
+                <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-primary">
+                    <i class="icon_edit" style="color: white"></i>
                 </a>
                 <a href="{{ route('suppliers.index') }}" class="btn btn-secondary">
-                    <i class="icon_arrow_back"></i> Voltar
+                    <i class="icon_arrow_back"></i>
                 </a>
             </div>
         </div>

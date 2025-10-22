@@ -3,11 +3,15 @@
 @section('content')
 <x-card title="Fornecedores">
     <x-card-header>
-        <div class="d-flex justify-content-between align-items-center">
-            <h2>Lista de Fornecedores</h2>
-            <a href="{{ route('suppliers.create') }}" class="btn btn-primary">
-                <i class="icon_add"></i> Novo Fornecedor
-            </a>
+        <div class="flex space-between">
+            <div class="page-header">
+                <h3>Lista de Fornecedores</h3>
+            </div>
+            <div class="section-action">
+                <a href="{{ route('suppliers.create') }}" class="btn btn-primary">
+                    <i class="icon_add" style="color: white"></i>
+                </a>
+            </div>
         </div>
     </x-card-header>
     <x-card-body>
@@ -37,17 +41,17 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('suppliers.show', $supplier->id) }}" class="btn btn-sm btn-info">
-                                        <i class="icon_visibility"></i> Ver
+                                    <a href="{{ route('suppliers.show', $supplier->id) }}" class="btn btn-primary" title="Ver">
+                                        <i class="icon_visibility"></i>
                                     </a>
-                                    <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-sm btn-warning">
-                                        <i class="icon_edit"></i> Editar
+                                    <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-secondary" title="Editar">
+                                        <i class="icon_edit"></i>
                                     </a>
                                     <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
-                                            <i class="icon_delete"></i> Excluir
+                                        <button type="submit" class="btn btn-error" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
+                                            <i class="icon_delete"></i>
                                         </button>
                                     </form>
                                 </td>
