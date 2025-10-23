@@ -8,14 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class CostCenter extends Model
 {
     use HasUuids;
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
         'number',
         'name',
         'budget',
-        'cost_center_type'
+        'cost_center_type',
     ];
 
     protected static function boot()

@@ -10,6 +10,7 @@ class Address extends Model
     use HasUuids;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -21,7 +22,7 @@ class Address extends Model
         'city',
         'state',
         'postal_code',
-        'country'
+        'country',
     ];
 
     public function supplier()
@@ -33,7 +34,7 @@ class Address extends Model
     {
         $address = "{$this->street_type}. {$this->street}, {$this->number}";
 
-        if (!empty($this->complement)) {
+        if (! empty($this->complement)) {
             $address .= ", {$this->complement}";
         }
 

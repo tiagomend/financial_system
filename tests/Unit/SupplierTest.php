@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Models\Supplier;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Enums\PersonType;
 use App\Models\Address;
 use App\Models\Document;
+use App\Models\Supplier;
 use App\Models\SupplierDocument;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase as TestCase;
 
 class SupplierTest extends TestCase
@@ -15,7 +15,9 @@ class SupplierTest extends TestCase
     use RefreshDatabase;
 
     private array $data;
+
     private Supplier $supplier;
+
     private Address $address;
 
     protected function setUp(): void
@@ -31,7 +33,7 @@ class SupplierTest extends TestCase
             'city' => 'Igarapava',
             'state' => 'SP',
             'postal_code' => '14540-000',
-            'country' => 'Brasil'
+            'country' => 'Brasil',
         ]);
 
         $this->data = [
@@ -74,7 +76,7 @@ class SupplierTest extends TestCase
     {
         $document = Document::create([
             'type' => 'cnpj',
-            'value' => '88823401000192'
+            'value' => '88823401000192',
         ]);
         SupplierDocument::create([
             'supplier_id' => $this->supplier->id,

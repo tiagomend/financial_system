@@ -12,6 +12,7 @@ class Supplier extends Model
     use HasUuids;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -19,13 +20,13 @@ class Supplier extends Model
         'trade_name',
         'person_type',
         'document',
-        'address_id'
+        'address_id',
     ];
 
     protected function personType(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $value instanceof PersonType ? $value : PersonType::from($value),
+            get: fn ($value) => $value instanceof PersonType ? $value : PersonType::from($value),
         );
     }
 
@@ -43,6 +44,6 @@ class Supplier extends Model
 
     public function address()
     {
-        return $this->hasOne(Address::class);
+        return $this->belongsTo(Address::class);
     }
 }
